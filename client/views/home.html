@@ -1,0 +1,19 @@
+<template name="home">
+  <div class="container">
+    <div class="jumbotron">
+      <h1>gitlog gets logs from GitHub</h1>
+      <button class="btn btn-default" type="button">Fire!</button>
+      
+      <ul>
+        {{#each logs}}
+          {{> log}}
+        {{/each}}
+      </ul>
+
+    </div>
+  </div>
+</template>
+
+<template name="log">
+  <li>{{createdAt}} - {{text}}</li>
+</template>

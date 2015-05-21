@@ -4,6 +4,17 @@
       <h1>gitlog gets logs from GitHub</h1>
       <button class="btn btn-default" type="button">Fire!</button>
       
+      <form>
+        <label for="url">Url</label>
+        <input type="text" id="url" name="url" value="https://api.github.com/repos/Promys/Promys/issues?state=closed"/>
+
+        <label for="user">User</label>
+        <input type="text" id="user" name="user" value="cchanpromys"/>
+
+        <label for="pass">Password</label>
+        <input type="password" id="pass" name="pass"/>
+      </form>
+
       <ul>
         {{#each logs}}
           {{> log}}
@@ -15,5 +26,5 @@
 </template>
 
 <template name="log">
-  <li>{{createdAt}} - {{text}}</li>
+  <li>{{html_url}} - {{title}}</li>
 </template>

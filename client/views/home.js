@@ -1,25 +1,38 @@
-if (Meteor.isClient) {
+//if (Meteor.isClient) {
   // This code only runs on the client
 
   //TOOD: Get these using Github API? https://developer.github.com/v3/
-  Template.home.helpers({
-    logs: [
-      { text: "This is task 1", createdAt: new Date() },
-      { text: "This is task 2", createdAt: new Date() },
-      { text: "This is task 3", createdAt: new Date() }
-    ]
-  });
-}
+  
+//}
 
 Template.home.helpers({
-  myAppVariable: function() {
-    return Session.get('myAppVariable');
-  }
+    logs: function () {
+        return Session.get('logs');
+    }
 });
 
 Template.home.events({
-  'click button': function(event, template) {
-    Session.set('myAppVariable', Math.floor(Math.random() * 11));
-  }
-});
+    'click button': function (event, template) {
 
+        var user = $('#user').val();
+        var pass = $('#pass').val();
+        var url = $('#url').val();
+
+        //Make a call to GitHub 
+        var opt = {
+            headers: {
+                //TODO: Not sure why 'auth' doesn't work. Doing this the hard way
+                Authorization: 'Basic ' + btoa(user + ':' + pass)
+            }
+        }
+
+        Meteor.http.get(url, opt, function (error, result) {
+            if (error) {
+                //TODO: Make something Fancy
+                alert('Something went wrong')
+            } else {
+                Session.set('logs', result.data);
+            }
+        });
+    }
+});

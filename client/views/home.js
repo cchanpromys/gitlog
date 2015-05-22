@@ -12,11 +12,16 @@ Template.home.helpers({
 });
 
 Template.home.events({
-    'click button': function (event, template) {
+    'submit form': function (e, template) {
+        e.preventDefault();
 
-        var user = $('#user').val();
-        var pass = $('#pass').val();
-        var url = $('#url').val();
+        var form = e.currentTarget;
+
+        var user = form.user.value;
+        var pass = form.pass.value;
+        var url = form.url.value;
+
+        // TODO validation
 
         //Make a call to GitHub 
         var opt = {

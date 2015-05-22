@@ -2,17 +2,20 @@
   <div class="container">
     <div class="jumbotron">
       <h1>gitlog gets logs from GitHub</h1>
-      <button class="btn btn-default" type="button">Fire!</button>
-      
-      <form>
-        <label for="url">Url</label>
-        <input type="text" id="url" name="url" value="https://api.github.com/repos/Promys/Promys/issues?state=closed"/>
-
-        <label for="user">User</label>
-        <input type="text" id="user" name="user" value="cchanpromys"/>
-
-        <label for="pass">Password</label>
-        <input type="password" id="pass" name="pass"/>
+      <form role="form" class="form-inline">
+        <div class="form-group">
+          <label for="url">Url: </label>
+          <input type="text" id="url" name="url" class="form-control" value="https://api.github.com/repos/Promys/Promys/issues?state=closed"/>
+        </div>
+        <div class="form-group">
+          <label for="user">User: </label>
+          <input type="text" id="user" name="user" class="form-control" value="cchanpromys"/>
+        </div>
+        <div class="form-group">
+          <label for="pass">Password: </label>
+          <input type="password" id="pass" name="pass" class="form-control" />
+        </div>
+        <button class="btn btn-default" type="submit">Fire!</button>
       </form>
 
       <ul>

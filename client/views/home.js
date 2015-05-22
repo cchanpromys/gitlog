@@ -1,10 +1,3 @@
-//if (Meteor.isClient) {
-  // This code only runs on the client
-
-  //TOOD: Get these using Github API? https://developer.github.com/v3/
-  
-//}
-
 Template.home.helpers({
     logs: function () {
         return Session.get('logs');
@@ -31,6 +24,14 @@ Template.home.events({
             }
         }
 
+//TOOD: Apparently you can make calls directly after getting to accessToken (but how?)
+//result = Meteor.http.get("https://api.github.com/user", {
+//  headers: {"User-Agent": "Meteor/1.0"},
+//  params: {
+//    access_token: accessToken
+//  }
+//});
+
         Meteor.http.get(url, opt, function (error, result) {
             if (error) {
                 //TODO: Make something Fancy
@@ -41,3 +42,41 @@ Template.home.events({
         });
     }
 });
+
+//TODO: When you login? Not sure how to get accessToken
+//Accounts.onCreateUser(function(options,user){
+//    
+//    alert('yes');
+//    var accessToken = user.services.github.accessToken,
+//        result,
+//        profile;
+//
+//    result = Meteor.http.get('https://api.github.com/user',{
+//        params : {
+//            access_token : accessToken
+//        },
+//        headers: {"User-Agent": "Meteor/1.0"}
+//    });
+//
+//    if(result.error){
+//        console.log(result);
+//        throw result.error
+//    }
+//
+//    profile = _.pick(result.data,
+//        'login',
+//        'name',
+//        'avatar_url',
+//        'url',
+//        'company',
+//        'blog',
+//        'location',
+//        'email',
+//        'bio',
+//        'html_url'
+//    );
+//
+//    user.profile = profile;
+//
+//    return user;
+//});

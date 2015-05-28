@@ -10,6 +10,11 @@
         <div class="form-group">
           <label for="url">Url: </label>
           <input type="text" id="url" name="url" class="form-control" value="https://api.github.com/repos/Promys/Promys/issues?state=closed"/>
+          <select>
+            {{#each repos}}
+              {{> repo}}
+            {{/each}}
+          </select>
         </div>
         <div class="form-group">
           <label for="user">User: </label>
@@ -19,6 +24,9 @@
           <label for="pass">Password: </label>
           <input type="password" id="pass" name="pass" class="form-control" />
         </div>
+        
+        
+        
         <button class="btn btn-default" type="submit">Fire!</button>
       </form>
 
@@ -27,11 +35,17 @@
           {{> log}}
         {{/each}}
       </ul>
+      
+      
 
     </div>
   </div>
 </template>
 
 <template name="log">
+  <li>{{html_url}} - {{title}}</li>
+</template>
+
+<template name="repo">
   <li>{{html_url}} - {{title}}</li>
 </template>

@@ -7,6 +7,7 @@ Session.set('orgs', [
         ]
     }
 ]);
+Session.set('logs',[]);
 
 Template.home.helpers({
     logs: function () {
@@ -22,18 +23,55 @@ Template.home.events({
         e.preventDefault();
 
         var form = e.target;
-        var url = form.repo.value + '/issues';
+        var github = Session.get('github');
+        var logs = Session.get('logs');
+        var msgs= null;
 
-
-        //https://api.github.com/repos/Promys/Promys/issues?state=closed
-        //Get all the user's repo
-        Meteor.http.get(url, {
+        //Get all commits by you
+        //https://developer.github.com/v3/repos/commits/#list-commits-on-a-repository
+        Meteor.http.get(form.repo.value + '/commits', {
             params : {
-                access_token : Session.get('accessToken'),
-                state: 'closed'
+                access_token : github.accessToken,
+                author: github.username,
+                since: form.from.value,
+                until: form.to.value
             },
-        }, function (error, result) {
-            Session.set('logs', result.data);
+        }, function(err, result){
+
+            msgs = result.data;
+
+            for(var i=0; i < msgs.length; i++){
+                var date= msgs[i].commit.author.date;
+                var msg = msgs[i].commit.message;
+
+                logs.push({msg: msg, date: date});
+            }
+
+            Session.set('logs', logs);
+
+            //Get some tickets created by you
+            //https://developer.github.com/v3/issues/#list-issues-for-a-repository
+            Meteor.http.get(form.repo.value + '/issues', {
+                params: {
+                    access_token: github.accessToken,
+                    creator: github.username,
+                    since: form.from.value,
+                    until: form.to.value
+                }
+            }, function(err, result){
+                var msgs = result.data;
+                var logs = Session.get('logs');
+
+                for(var i=0; i<msgs.length; i++){
+                    var date= msgs[i].created_at;
+                    var msg = "Open #" + msgs[i].number + '. '  + msgs[i].title;
+
+                    logs.push({msg: msg, date: date});
+                }
+
+                //Update your logs
+                Session.set('logs', logs);
+            });
         });
     },
     'click .loadDropdown': function(e, template){
@@ -47,9 +85,10 @@ Template.home.events({
             return;
         }
 
-        var accessToken = Meteor.user().services.github.accessToken;
+        var github = Meteor.user().services.github;
+        var accessToken = github.accessToken;
 
-        Session.set('accessToken', accessToken);
+        Session.set('github', github);
 
         //Get user's organization
         //https://developer.github.com/v3/orgs/#list-user-organizations

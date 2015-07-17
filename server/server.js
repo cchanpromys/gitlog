@@ -1,4 +1,3 @@
-//TODO: In hopes that I can set the accessToken so I can use it on the client side
 Accounts.onCreateUser(function(options, user) {
       if (options.profile) {
         user.profile = options.profile;
